@@ -1,0 +1,66 @@
+﻿@page "/payloads"
+<!-- TODO: Add using and inject statements -->
+@using CP380_B1_BlockList.Models
+@using CP380_B3_BlockBlazor.Data
+@inject PendingTransactionService PendingTransactionService
+
+<h3>Pending Transactions</h3>
+
+@if (payloads == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <!-- TODO: Render a table with all of the pending transactions 
+               This table should include all of the fields for each pending transaction
+      -->
+    <table class="table table-borderless">
+      <thead>
+        <tr>
+          <th scope="col">User</th>
+          <th scope="col">TransactionType</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Item</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var i in payloads)
+        {
+            <tr>
+                <td>@i.User</td>           
+                <td>@i.TransactionType</td>
+                <td>@i.Amount</td>           
+                <td>@i.Item</td>           
+            </tr>
+        }
+      </tbody>
+    </table>
+}
+
+<p></p>
+
+<p>@submitResponse</p>
+
+
+<!-- TODO: Add EditForm to submit a new transaction to the server -->
+
+
+@code {
+    IEnumerable<Payload> payloads;
+    private Payload Payload = new Payload("", 0, 0, "");
+    private string submitResponse = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // TODO: Fetch all the payloads from the service
+        payloads = await PendingTransactionService.ListPayloads();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // TODO: submit the new payload to the web API using the PendingTransactionService
+        //       - if succcessful, the payloads should be re-loaded
+        //       - if there is an error, then the submitResponse variable should be updated with the error
+    }
+}
